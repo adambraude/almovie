@@ -1,4 +1,5 @@
 package analyzer;
+import util.*;
 
 public class MovieLensAnalyzer {
 	
@@ -11,5 +12,7 @@ public class MovieLensAnalyzer {
 			System.exit(-1);
 		}		
 		// FILL IN THE REST OF YOUR PROGRAM
+		DataLoader dataLoad = new DataLoader();
+		dataLoad.loadData(args[1], args[0]);
 	}
 }
