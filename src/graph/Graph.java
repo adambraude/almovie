@@ -12,7 +12,7 @@ import java.util.*;
  *
  */
 
-class Graph<V> implements GraphIfc<V> {
+public class Graph<V> implements GraphIfc<V> {
   
   //Abstract Map, List as suggested in the assigment, 
   //but I suspect that some operations could be improved by replacing the Lists with HashSets.
@@ -21,7 +21,7 @@ class Graph<V> implements GraphIfc<V> {
   /**
    *Constructor that creates a new empty graph of Vs
    */
-  Graph(){
+  public Graph(){
     adjacencyList = new HashMap<V, List<V>>();
   }
   
