@@ -32,56 +32,40 @@ public class GraphAlgorithms {
 		return pathsPrev;
 	}
 	
-	//Works for my simple test case,haven't got around to trying it out on the graph, and haven't cleaned the code up yet.
-	public static int[] Dijkstras(int source, Graph<Integer> graph) { //movie is the class Movie, and is the node in the graph
+	//Works for my simple test case,haven't got around to trying it out on the graph, code is now clean
+		public static int[] Dijkstras(int source, Graph<Integer> graph) { //works with any graph with edges of weight 1
         PriorityQueue minprio = new PriorityQueue();
-        int[] dist = new int[graph.numVertices()]; //2D array of integers, where the left column is the node, and the right column is the distance to the source node
+        int[] dist = new int[graph.numVertices()];
         int[] prev = new int[graph.numVertices()];
 
-        for (int i = 0; i < prev.length; i++) {
+        for (int i = 0; i < prev.length; i++) { //initializes the prev with a list of unatainable nodes
             prev[i] = -1;
         }
 
-        for (int i = 0; i < dist.length; i++) {
+        for (int i = 0; i < dist.length; i++) { //initiliazes the length with an unattainable length
             dist[i] = graph.numVertices() + 1;
         }
 
-        dist[source-1] = 0;
-        prev[source-1] = 0;
+        dist[source-1] = 0; //source is null
+        prev[source-1] = 0; //source is null
         minprio.push(0, source); //Source node has priority 0 and, and is the 0th node
         List<Integer> neighbors = graph.getNeighbors(source-1);
 
-        /*
-        for (int i = 0; i < neighbors.size(); i++){
-            int u = neighbors.get(i);
-            minprio.push(1, u); //pushes the nodes with distance 1, because all nodes start with distance 1, and start labeling them from 1.
-            dist[u] = 1;
-        }
-        */
-        System.out.println("done with second loop: "+ Arrays.toString(dist));
-
-
-        while (true){
+        while (true){ //since the min priority queue isn't initialized with all nodes, we know it runs out of nodes when it breaks
             try {
-                int u = minprio.topElement();
-                minprio.pop();
-                //System.out.println(u);
-                List<Integer> newneighbors = graph.getNeighbors(u);
+                int u = minprio.topElement(); //store the top node
+                minprio.pop(); //remove it from the queue
+                List<Integer> newneighbors = graph.getNeighbors(u); //get a list of the neighbors for u
                 for (int i = 0; i < newneighbors.size(); i++) {
-                    System.out.println(u);
-                    int v = newneighbors.get(i); // new movie
+                    int v = newneighbors.get(i); // new movie from the list of neighbors
                     int alt = dist[u-1] + 1; //1 is the weight of u to v, which is always 1 because  all weights are 1
-                    System.out.println("alt: "+alt);
-                    System.out.println("dist[v]: "+dist[v-1]);
-                    if (alt < dist[v-1]) {
-                        //System.out.println("if statement succeeds for: "+alt+"<"+dist[v]);
-                        dist[v-1] = alt;
-                        prev[v-1] = u;
+                    if (alt < dist[v-1]) { //if the new path is better than the old one
+                        dist[v-1] = alt; //distance is now alt
+                        prev[v-1] = u; //previous for this node is now the previous node
                         if (minprio.isPresent(v)) {
-                            minprio.changePriority(v, alt);
+                            minprio.changePriority(v, alt); //if the node is in the graph, change it to the new prio
                         } else {
-                            System.out.println("Pushing "+v);
-                            minprio.push(alt, v);
+                            minprio.push(alt, v); //else it needs to be added to the queue
                         }
                     }
                 }
@@ -90,7 +74,6 @@ public class GraphAlgorithms {
                 break;
             }
         }
-        System.out.println("done with while loop");
         return prev;
     }
 }
