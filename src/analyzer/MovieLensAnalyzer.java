@@ -132,7 +132,19 @@ public class MovieLensAnalyzer {
 				System.out.println("Enter ending node (1-" + graph.numVertices() + "):");
 				int end = scan.nextInt();
 				scan.nextLine();
-				System.out.println("This feature will be implemented when we have a working Dijkstra's");
+
+				Movie startingmovie = data.getMovies().get(start);
+				int[] path = GraphAlgorithms.Dijkstras(startingmovie, graph);
+				if (path[end-1] == -1) { //path is 0-index-based
+					System.out.println("The start movie and the end movie are not connected!");
+				}
+				int counter = end; //counter is 1-index based
+				while (counter != start){
+					Movie movie1 = data.getMovies().get(counter); //checks current movie
+					Movie movie2 = data.getMovies().get(path[counter-1]); //checks the next movie in line to the start
+					counter = path[counter-1]; //sets the counter to the next movie in line
+					System.out.println(movie1.getTitle()+" ===> "+movie2.getTitle());
+				} //Starts with the end movie, ends with the start movie
 			}
 			else if (input.equals("4")) {
 				System.out.println("Enter string to search movie titles for:");
