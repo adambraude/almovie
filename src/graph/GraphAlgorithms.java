@@ -33,7 +33,7 @@ public class GraphAlgorithms {
 	}
 	
 	//Works for my simple test case,haven't got around to trying it out on the graph, code is now clean
-		public static int[] Dijkstras(int source, Graph<Integer> graph) { //works with any graph with edges of weight 1
+	public static int[] Dijkstras(Movie source, GraphIfc<Movie> graph) { //works with any graph with edges of weight 1
         PriorityQueue minprio = new PriorityQueue();
         int[] dist = new int[graph.numVertices()];
         int[] prev = new int[graph.numVertices()];
@@ -46,19 +46,24 @@ public class GraphAlgorithms {
             dist[i] = graph.numVertices() + 1;
         }
 
-        dist[source-1] = 0; //source is null
-        prev[source-1] = 0; //source is null
-        minprio.push(0, source); //Source node has priority 0 and, and is the 0th node
-        List<Integer> neighbors = graph.getNeighbors(source-1);
+        dist[source.getMovieId()-1] = 0; //source is null, and Movie index is 1-based
+        prev[source.getMovieId()-1] = 0; //source is null
+        minprio.push(0, source.getMovieId()); //Source node has priority 0 and, and is the 0th node
+
+        Movie[] graphlist = new Movie[graph.numVertices()]; //stores the movies that we will need to access in an array
+        graphlist[source.getMovieId()-1] = source;
 
         while (true){ //since the min priority queue isn't initialized with all nodes, we know it runs out of nodes when it breaks
             try {
-                int u = minprio.topElement(); //store the top node
+                int u = minprio.topElement(); //store the top node int
                 minprio.pop(); //remove it from the queue
-                List<Integer> newneighbors = graph.getNeighbors(u); //get a list of the neighbors for u
+                Movie currentmovie = graphlist[u-1]; //grabs the movie from the list
+                List<Movie> newneighbors = graph.getNeighbors(currentmovie); //get a list of the neighbors for u
                 for (int i = 0; i < newneighbors.size(); i++) {
-                    int v = newneighbors.get(i); // new movie from the list of neighbors
+                    Movie nextmovie = newneighbors.get(i); // next movie from the list of neighbors
+                    graphlist[nextmovie.getMovieId()-1] = nextmovie; //adds it to the movie list
                     int alt = dist[u-1] + 1; //1 is the weight of u to v, which is always 1 because  all weights are 1
+                    int v = nextmovie.getMovieId();
                     if (alt < dist[v-1]) { //if the new path is better than the old one
                         dist[v-1] = alt; //distance is now alt
                         prev[v-1] = u; //previous for this node is now the previous node
