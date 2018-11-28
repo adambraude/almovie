@@ -3,8 +3,19 @@ import java.util.Arrays;
 
 import data.*;
 
+/*
+ * This Class has methods for finding shortest paths in Graphs
+ *
+ *  @author Adam Braude and Eli Corpron
+ *  @version 11.27.18
+ */
 public class GraphAlgorithms {
 	
+	/**
+     	* floydWarshall that takes a graph of Movies and returns a 2d array of shortest paths between pairs of nodes
+     	* @param graph The graph of Movies to be parsed
+     	* @return Returns a 2d array of ints that correpsonds to the shortest path between nodes.
+     	*/
 	public static int[][] floydWarshall(GraphIfc<Movie> graph){
 		int v = graph.numVertices();
 		int[][] paths = new int[v][v];
@@ -32,7 +43,14 @@ public class GraphAlgorithms {
 		return pathsPrev;
 	}
 	
-	//Works for my simple test case,haven't got around to trying it out on the graph, code is now clean
+	/**
+     	* Dijjkstras that works on a graph of Movie objects and a Movie object for a starting node, then finds the shortest
+     	* path to every node in the graph. Returns this in an array of ints, where the index corresponds to the node, and
+     	* the int at the index is the preceding node.
+     	* @param source The source node
+     	* @param graph The graph to be parsed
+     	* @return Returns an array of ints, where the index is the node, and the int at the index is the previous node
+    	*/
 	public static int[] Dijkstras(Movie source, GraphIfc<Movie> graph) { //works with any graph with edges of weight 1
         PriorityQueue minprio = new PriorityQueue();
         int[] dist = new int[graph.numVertices()];
